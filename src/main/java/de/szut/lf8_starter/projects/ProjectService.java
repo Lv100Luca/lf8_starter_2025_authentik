@@ -19,7 +19,7 @@ public class ProjectService {
     @Transactional
     public Long createProject(ProjectCreateDTO dto) {
         if (projectRepository.existsByName(dto.getName())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Projekt existiert bereits");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "project already exists");
         }
         ProjectEntity entity = ProjectEntity.builder()
                 .name(dto.getName())
@@ -34,7 +34,7 @@ public class ProjectService {
     @Transactional
     public void deleteProject(Long id) {
         if (!projectRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Projekt nicht gefunden");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "project not found");
         }
         projectRepository.deleteById(id);
     }
@@ -42,7 +42,7 @@ public class ProjectService {
     @Transactional
     public ProjectResponseDTO updateProject(Long id, ProjectUpdateDto dto) {
         ProjectEntity entity = projectRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Projekt nicht gefunden"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "project not found"));
         if (dto.getName() != null) entity.setName(dto.getName());
         if (dto.getStartDate() != null) entity.setStartDate(dto.getStartDate());
         if (dto.getEndDate() != null) entity.setEndDate(dto.getEndDate());
