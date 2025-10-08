@@ -7,10 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +66,7 @@ public class ProjectService {
         try {
             restTemplate.getForEntity(employeeServiceUrl + employeeId, Void.class);
             return true;
-        } catch (org.springframework.web.client.HttpClientErrorException.NotFound e) {
+        } catch (HttpClientErrorException.NotFound e) {
             return false;
         }
     }

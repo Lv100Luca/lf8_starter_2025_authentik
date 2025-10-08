@@ -19,7 +19,7 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<Long> createProject(@RequestBody ProjectCreateDTO dto) {
         Long id = projectService.createProject(dto);
-        return ResponseEntity.created(URI.create("/projects/" + id)).body(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     @DeleteMapping("/{id}")
