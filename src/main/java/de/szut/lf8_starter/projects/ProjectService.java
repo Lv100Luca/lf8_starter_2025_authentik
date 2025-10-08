@@ -15,14 +15,9 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class ProjectService {
     private final ProjectRepository projectRepository;
-    private final RestTemplate restTemplate;
-    private final String employeeServiceUrl = "http://employee-service/api/employees/";
 
     @Transactional
     public Long createProject(ProjectCreateDTO dto) {
-        if (!employeeExists(dto.getProjectManagerId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Projektleiter nicht gefunden");
-        }
         if (projectRepository.existsByName(dto.getName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Projekt existiert bereits");
         }
@@ -60,14 +55,5 @@ public class ProjectService {
                 entity.getEndDate(),
                 entity.getProjectManagerId()
         );
-    }
-
-    private boolean employeeExists(Long employeeId) {
-        try {
-            restTemplate.getForEntity(employeeServiceUrl + employeeId, Void.class);
-            return true;
-        } catch (HttpClientErrorException.NotFound e) {
-            return false;
-        }
     }
 }

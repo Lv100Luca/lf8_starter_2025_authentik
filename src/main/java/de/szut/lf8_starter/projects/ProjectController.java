@@ -17,9 +17,10 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @PostMapping
-    public ResponseEntity<Long> createProject(@RequestBody ProjectCreateDTO dto) {
+    public ResponseEntity<String> createProject(@RequestBody ProjectCreateDTO dto) {
         Long id = projectService.createProject(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(id);
+        String request = "Project with id: " + id + " created, with name: " + dto.getName();
+        return ResponseEntity.status(HttpStatus.CREATED).body(request);
     }
 
     @DeleteMapping("/{id}")
