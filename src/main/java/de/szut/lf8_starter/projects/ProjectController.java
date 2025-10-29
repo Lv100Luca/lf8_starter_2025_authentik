@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import java.net.URI;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/projects")
@@ -25,7 +27,7 @@ public class ProjectController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
-        projectService.deleteProject(id);
+        projectService.deleteProjectById(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -33,6 +35,15 @@ public class ProjectController {
     public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id, @RequestBody ProjectUpdateDto dto) {
         ProjectResponseDTO updated = projectService.updateProject(id, dto);
         return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProjectResponseDTO>> getAllProjects() {
+        List<ProjectResponseDTO> allProjects = new ArrayList<>();
+        for (ProjectEntity project : projectService.findAll()) {
+            allProjects.add(projectService.getProjectDto(project));
+        }
+        return ResponseEntity.ok(allProjects);
     }
 
     @ExceptionHandler(ResponseStatusException.class)

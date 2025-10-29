@@ -7,14 +7,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
     private final ProjectRepository projectRepository;
+
+    public List<ProjectEntity> findAll() {
+        return projectRepository.findAll();
+    }
 
     @Transactional
     public Long createProject(ProjectCreateDTO dto) {
@@ -31,15 +35,13 @@ public class ProjectService {
         return entity.getId();
     }
 
-    @Transactional
-    public void deleteProject(Long id) {
+    public void deleteProjectById(Long id) {
         if (!projectRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "project not found");
         }
         projectRepository.deleteById(id);
     }
 
-    @Transactional
     public ProjectResponseDTO updateProject(Long id, ProjectUpdateDto dto) {
         ProjectEntity entity = projectRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "project not found"));
@@ -55,5 +57,16 @@ public class ProjectService {
                 entity.getEndDate(),
                 entity.getProjectManagerId()
         );
+    }
+
+    public ProjectResponseDTO getProjectDto(final ProjectEntity project) {
+        ProjectResponseDTO dto = new ProjectResponseDTO();
+        dto.setId(project.getId());
+        dto.setName(project.getName());
+        dto.setStartDate(project.getStartDate());
+        dto.setEndDate(project.getEndDate());
+        dto.setProjectManagerId(project.getProjectManagerId());
+
+        return dto;
     }
 }
