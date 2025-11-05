@@ -1,7 +1,9 @@
     package de.szut.lf8_starter.employee_management;
 
     import de.szut.lf8_starter.employee_management.model.SkillDto;
+    import de.szut.lf8_starter.projects.ProjectEntity;
     import de.szut.lf8_starter.projects.dto.ProjectResponseDTO;
+    import lombok.extern.slf4j.Slf4j;
     import org.springframework.stereotype.Service;
     import org.springframework.web.client.HttpServerErrorException;
 
@@ -9,6 +11,7 @@
     import java.util.Set;
     import java.util.stream.Collectors;
 
+    @Slf4j
     @Service
     public class EmployeeManagementService {
 
@@ -18,7 +21,7 @@
             this.apiClient = apiClient;
         }
 
-        public boolean VerifyEmployeeIsQualifiedForProject(int id, Object projectEntiy) {
+        public boolean VerifyEmployeeIsQualifiedForProject(int id, ProjectEntity projectEntiy) {
             return false; //todo: implement this with `ProjectEntity`
         }
 

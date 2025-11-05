@@ -4,6 +4,7 @@ import de.szut.lf8_starter.projects.ProjectEntity;
 import de.szut.lf8_starter.projects.ProjectRepository;
 import de.szut.lf8_starter.projects.dto.ProjectCreateDTO;
 import de.szut.lf8_starter.projects.dto.ProjectResponseDTO;
+import de.szut.lf8_starter.projects.dto.ProjectSimpleGetDTO;
 import de.szut.lf8_starter.projects.dto.ProjectUpdateDto;
 import de.szut.lf8_starter.projects.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,14 @@ public class ProjectDtoMapping {
         dto.setEndDate(project.getEndDate());
         dto.setProjectManagerId(project.getProjectManagerId());
 
+        return dto;
+    }
+
+    public ProjectSimpleGetDTO getProjectSimpleGetDto(final ProjectEntity project) {
+        ProjectSimpleGetDTO dto = new ProjectSimpleGetDTO();
+        dto.setId(project.getId());
+        dto.setName(project.getName());
+        dto.setProjectManagerId(project.getProjectManagerId());
         return dto;
     }
 
