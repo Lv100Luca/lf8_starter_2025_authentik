@@ -1,12 +1,14 @@
 package de.szut.lf8_starter.employee.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeGetDTO {
-    private final Long id;
-    private final String firstName;
-    private final String lastName;
+    private Long id;
+    private String firstName;
+    private String lastName;
 }

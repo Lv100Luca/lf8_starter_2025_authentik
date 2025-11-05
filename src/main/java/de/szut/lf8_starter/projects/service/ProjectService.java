@@ -1,5 +1,7 @@
 package de.szut.lf8_starter.projects.service;
 
+import de.szut.lf8_starter.employee.EmployeeEntity;
+import de.szut.lf8_starter.employee.EmployeeRepository;
 import de.szut.lf8_starter.projects.ProjectEntity;
 import de.szut.lf8_starter.projects.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectService {
     private final ProjectRepository projectRepository;
+    private final EmployeeRepository employeeRepository;
 
     public List<ProjectEntity> findAll() {
         return projectRepository.findAll();
@@ -38,5 +41,10 @@ public class ProjectService {
 
     public ProjectEntity save(final ProjectEntity savedProject) {
         return projectRepository.save(savedProject);
+    }
+
+    public List<EmployeeEntity> getAllEmployeesByProject(final Long projectId) {
+        ProjectEntity project = getProjectById(projectId);
+        return employeeRepository.findEmployeeEntitiesByProjects(project);
     }
 }
