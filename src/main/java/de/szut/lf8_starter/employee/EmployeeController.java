@@ -3,11 +3,14 @@ package de.szut.lf8_starter.employee;
 import de.szut.lf8_starter.employee.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/employee")
 @RequiredArgsConstructor
 public class EmployeeController {
 
