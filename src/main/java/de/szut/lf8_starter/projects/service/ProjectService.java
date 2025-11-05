@@ -45,6 +45,6 @@ public class ProjectService {
 
     public List<EmployeeEntity> getAllEmployeesByProject(final Long projectId) {
         ProjectEntity project = getProjectById(projectId);
-        return employeeRepository.findEmployeeEntitiesByProjects(project);
+        return employeeRepository.findAllByProjects(project);
     }
 }

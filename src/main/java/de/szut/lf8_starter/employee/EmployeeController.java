@@ -2,7 +2,6 @@ package de.szut.lf8_starter.employee;
 
 import de.szut.lf8_starter.employee.dto.EmployeeGetDTO;
 import de.szut.lf8_starter.employee.mapping.EmployeeDtoMapping;
-import de.szut.lf8_starter.employee.service.EmployeeService;
 import de.szut.lf8_starter.projects.ProjectEntity;
 import de.szut.lf8_starter.projects.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeController {
 
-    private final EmployeeService employeeService;
     private final EmployeeDtoMapping employeeDtoMapping;
     private final ProjectService projectService;
 
@@ -39,23 +37,15 @@ public class EmployeeController {
     @DeleteMapping("/projects/{projectId}/employee/{employeeId}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Long projectId, @PathVariable Long employeeId) {
         ProjectEntity project = projectService.getProjectById(projectId);
-        EmployeeEntity employee = employeeService.getEmployeeById(employeeId);
+        EmployeeEntity employee = project.getEmployees().stream()
+            .filter(e -> e.getId().equals(employeeId))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Employee not found in project"));
 
         project.getEmployees().remove(employee);
+        projectService.save(project);
 
-        String response = "Employee " + employee.getLastName() + "with id " + employeeId + " was deleted, from project " + projectId + "!";
+        String response = "Employee " + employee.getLastName() + " with id " + employeeId + " was deleted from project " + projectId + "!";
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
-
-//    @PostMapping("projects/{projectId}/employee/{employeeId}")
-//    public ResponseEntity<GetProjectDto> addAnExistingPlayerToAProject(@PathVariable Long projectId, @PathVariable Long employeeId) {
-//
-//        ProjectEntity project = projectService.getProjectById(projectId);
-//        EmployeeEntity employee = employeeService.getEmployeeById(employeeId);
-//
-//        project.getEmployeeList.add(employee);
-//        GetProjectDto projectDto = projectMappingService.convert(project);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(projectDto);
-//    }
 }
