@@ -16,13 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping()
 @RequiredArgsConstructor
 public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final EmployeeDtoMapping employeeDtoMapping;
     private final ProjectService projectService;
+
+
 
     @GetMapping("/projects/{projectId}/employee")
     public ResponseEntity<List<EmployeeGetDTO>> getAllEmployeesFromProject(@PathVariable Long projectId) {
