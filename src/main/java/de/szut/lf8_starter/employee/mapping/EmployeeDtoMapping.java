@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +33,7 @@ public class EmployeeDtoMapping {
         var projects = new HashSet<ProjectSimpleGetDTO>();
 
         employee.getProjects().forEach(project -> {
-            projects.add(projectDtoMapping.getProjectSimpleGetDto(project));
+            projects.add(projectDtoMapping.mapToSimpleDto(project));
         });
 
         resultDto.setProjects(projects);

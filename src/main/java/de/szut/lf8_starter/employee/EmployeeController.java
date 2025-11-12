@@ -5,7 +5,6 @@ import de.szut.lf8_starter.employee.mapping.EmployeeDtoMapping;
 import de.szut.lf8_starter.projects.ProjectEntity;
 import de.szut.lf8_starter.projects.service.ProjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class EmployeeController {
     @GetMapping("/projects/{projectId}/employee")
     public ResponseEntity<List<EmployeeGetDTO>> getAllEmployeesFromProject(@PathVariable Long projectId) {
         List<EmployeeGetDTO> employeeGetDTOList = new ArrayList<>();
-        List<EmployeeEntity> employeeList = projectService.getAllEmployeesByProject(projectId);
+        List<EmployeeEntity> employeeList = projectService.getEmployeesByProject(projectId);
 
         for (EmployeeEntity employee : employeeList) {
             employeeGetDTOList.add(employeeDtoMapping.toEmployeeGetDTO(employee));
