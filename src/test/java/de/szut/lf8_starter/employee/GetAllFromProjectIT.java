@@ -2,6 +2,7 @@ package de.szut.lf8_starter.employee;
 
 import de.szut.lf8_starter.projects.ProjectEntity;
 import de.szut.lf8_starter.testcontainers.AbstractIntegrationTest;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -12,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Transactional
 public class GetAllFromProjectIT extends AbstractIntegrationTest {
     @Test
     @WithMockUser(roles = "user")
