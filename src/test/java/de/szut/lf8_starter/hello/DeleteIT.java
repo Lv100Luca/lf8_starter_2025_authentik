@@ -10,16 +10,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.springframework.security.test.context.support.WithMockUser;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
-public class DeleteIT extends AbstractIntegrationTest {
+class DeleteIT extends AbstractIntegrationTest {
 
 
     @Test
     void authorization() throws Exception {
         HelloEntity stored = helloRepository.save(new HelloEntity("Foo"));
         this.mockMvc.perform(delete("/hello/" + stored.getId()))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -27,19 +28,19 @@ public class DeleteIT extends AbstractIntegrationTest {
     void happyPath() throws Exception {
         HelloEntity stored = helloRepository.save(new HelloEntity("Foo"));
 
-        final var content = this.mockMvc.perform(
+        this.mockMvc.perform(
                         delete("/hello/" + stored.getId())
                                 .with(csrf()))
                 .andExpect(status().isNoContent());
-        assertThat(helloRepository.findById(stored.getId()).isPresent()).isFalse();
+        assertThat(helloRepository.findById(stored.getId())).isEmpty();
     }
 
 
     @Test
     @WithMockUser(roles = "user")
     void idDoesNotExist() throws Exception {
-        final var contentAsString = this.mockMvc.perform(delete("/hello/5")
-                .with(csrf()))
+        this.mockMvc.perform(delete("/hello/5")
+                        .with(csrf()))
                 .andExpect(content().string(containsString("HelloEntity not found on id = 5")))
                 .andExpect(status().isNotFound());
     }

@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CreateProjectIT extends AbstractIntegrationTest {
+class CreateProjectIT extends AbstractIntegrationTest {
 
     @Test
     @WithMockUser(roles = "user")

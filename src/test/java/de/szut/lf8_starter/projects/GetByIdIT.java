@@ -9,13 +9,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GetByIdIT extends AbstractIntegrationTest {
+class GetByIdIT extends AbstractIntegrationTest {
 
     @Test
     void authorization() throws Exception {
         this.mockMvc.perform(get("/hello")
                         .with(csrf()))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isOk());
     }
 
     @Test

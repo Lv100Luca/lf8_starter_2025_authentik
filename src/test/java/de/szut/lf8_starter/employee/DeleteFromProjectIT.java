@@ -10,7 +10,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class DeleteFromProjectIT extends AbstractIntegrationTest {
+class DeleteFromProjectIT extends AbstractIntegrationTest {
     @Transactional
     @Test
     @WithMockUser(roles = "user")
