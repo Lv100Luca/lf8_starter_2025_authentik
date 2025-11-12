@@ -42,12 +42,6 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
-//    public List<ProjectEntity> getProjectsForEmployee(final Long employeeId) {
-//        var allProjects = findAll();
-//
-//        return allProjects.stream().map(p -> p.)
-//    }
-
     public void AssignProjectToEmployee(final Long projectId, final Long employeeId) {
         var employeeOpt = employeeManagementService.getById(employeeId);
 
