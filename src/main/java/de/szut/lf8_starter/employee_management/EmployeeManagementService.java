@@ -16,38 +16,9 @@ import java.util.Optional;
 public class EmployeeManagementService {
     private final EmployeeManagementApiClient apiClient;
     private final EmployeeRepository employeeRepository;
-    
-    public boolean VerifyEmployeeIsQualifiedForProject(int id, ProjectEntity projectEntiy) {
-        return false; //todo: implement this with `ProjectEntity`
-    }
 
     public boolean VerifyEmployeeExists(Long id) {
         return apiClient.getEmployeeById(id).isPresent();
-    }
-
-    public boolean VerifyEmployeeIsQualified(Long id, Long... qualifications) {
-        if (qualifications == null || qualifications.length == 0) {
-            return false;
-        }
-
-        var employeeOpt = apiClient.getEmployeeById(id);
-
-        if (employeeOpt.isEmpty()) {
-            return false;
-        }
-
-        var employee = employeeOpt.get();
-
-        var skills = employee.getSkillSet();
-
-        if (skills == null) {
-            return false;
-        }
-
-        return Arrays.stream(qualifications)
-                .allMatch(q -> skills.stream()
-                        .map(SkillDto::getId)
-                        .anyMatch(skillId -> skillId == q));
     }
 
     public List<EmployeeEntity> findAllByProjects(ProjectEntity project) {
