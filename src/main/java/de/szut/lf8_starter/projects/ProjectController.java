@@ -19,13 +19,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectController {
     private final ProjectService projectService;
-    private final ProjectDtoMapping projectDtoMapping;
 
     @PostMapping
-    public ResponseEntity<String> createProject(@RequestBody ProjectCreateDTO dto) {
-        ProjectEntity project = projectDtoMapping.createProject(dto);
-        String request = "Project with id: " + project.getId() + " created, with name: " + project.getName();
-        return ResponseEntity.status(HttpStatus.CREATED).body(request);
+    public ResponseEntity<ProjectResponseDTO> createProject(@RequestBody ProjectCreateDTO dto) {
+        var project = projectService.create(dto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ProjectDtoMapping.mapToResponseDto(project));
     }
 
     @DeleteMapping("/{id}")
@@ -36,24 +35,32 @@ public class ProjectController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id, @RequestBody ProjectUpdateDto dto) {
-        ProjectResponseDTO updated = projectDtoMapping.updateProject(id, dto);
-        return ResponseEntity.ok(updated);
+        var updatedProject = projectService.updateProject(id, dto);
+        return ResponseEntity.ok(ProjectDtoMapping.mapToResponseDto(updatedProject));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectResponseDTO> getProjectById(@PathVariable Long id) {
-        ProjectEntity project = projectService.getProjectById(id);
-        ProjectResponseDTO projectResponseDTO = projectDtoMapping.getProjectDto(project);
-        return ResponseEntity.ok(projectResponseDTO);
+        var project = projectService.getProjectById(id);
+        return ResponseEntity.ok(ProjectDtoMapping.mapToResponseDto(project));
     }
 
     @GetMapping
     public ResponseEntity<List<ProjectResponseDTO>> getAllProjects() {
-        List<ProjectResponseDTO> allProjects = new ArrayList<>();
-        for (ProjectEntity project : projectService.findAll()) {
-            allProjects.add(projectDtoMapping.getProjectDto(project));
-        }
-        return ResponseEntity.ok(allProjects);
+        var projects = projectService.findAll();
+
+        var projectDtos = projects.stream()
+                .map(ProjectDtoMapping::mapToResponseDto)
+                .toList();
+
+        return ResponseEntity.ok(projectDtos);
+    }
+
+    @PostMapping("/{projectId}/assign/{employeeId}")
+    public ResponseEntity<Void> AssignEmployeeToProject(@PathVariable Long projectId, @PathVariable Long employeeId) {
+        projectService.AssignProjectToEmployee(projectId, employeeId);
+
+        return ResponseEntity.ok().build();
     }
 
     @ExceptionHandler(ResponseStatusException.class)

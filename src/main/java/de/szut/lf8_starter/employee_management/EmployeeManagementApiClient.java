@@ -23,7 +23,7 @@ public class EmployeeManagementApiClient {
         jwt = getJwt();
     }
 
-    public Optional<EmployeeResponseDto> getEmployeeById(int id) {
+    public Optional<EmployeeResponseDto> getEmployeeById(Long id) {
         try {
             var url = baseUrl + "/employees/" + id;
 
