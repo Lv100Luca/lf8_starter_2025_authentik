@@ -14,8 +14,6 @@ import java.util.HashSet;
 @RequiredArgsConstructor
 public class EmployeeDtoMapping {
 
-    private final ProjectDtoMapping projectDtoMapping;
-
     public EmployeeGetDTO toEmployeeGetDTO(EmployeeEntity employee) {
         return new EmployeeGetDTO(
                 employee.getId(),
@@ -32,9 +30,7 @@ public class EmployeeDtoMapping {
 
         var projects = new HashSet<ProjectSimpleGetDTO>();
 
-        employee.getProjects().forEach(project -> {
-            projects.add(projectDtoMapping.mapToSimpleDto(project));
-        });
+        employee.getProjects().forEach(project -> projects.add(ProjectDtoMapping.mapToSimpleDto(project)));
 
         resultDto.setProjects(projects);
         return resultDto;

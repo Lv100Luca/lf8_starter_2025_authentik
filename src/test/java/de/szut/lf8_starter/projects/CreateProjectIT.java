@@ -1,10 +1,12 @@
-package de.szut.lf8_starter.hello;
+package de.szut.lf8_starter.projects;
 
 import de.szut.lf8_starter.testcontainers.AbstractIntegrationTest;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -13,48 +15,39 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class PostIT extends AbstractIntegrationTest {
-
-
-    @Test
-    void authorization() throws Exception {
-        final String content = """
-                {
-                    "message": "Foo"
-                }
-                """;
-
-        this.mockMvc.perform(post("/hello")
-                        .content(content).contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
-                .andExpect(status().isOk());
-    }
+class CreateProjectIT extends AbstractIntegrationTest {
 
     @Test
     @WithMockUser(roles = "user")
-    void storeAndFind() throws Exception {
-        final String content = """
+    void createProject() throws Exception {
+        String name = "New Project";
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusMonths(6);
+        Long projectManagerId = 1L;
+        final String newProjectJson = String.format("""
                 {
-                    "message": "Foo"
+                    "name": "%s",
+                    "startDate": "%s",
+                    "endDate": "%s",
+                    "projectManagerId": %s
                 }
-                """;
+                """, name, startDate, endDate, projectManagerId);
 
-        final var contentAsString = this.mockMvc.perform(post("/hello").content(content).contentType(MediaType.APPLICATION_JSON)
-
+        final var contentAsString = this.mockMvc.perform(post("/projects").content(newProjectJson).contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
-                .andExpect(jsonPath("message", is("Foo")))
+                .andExpect(jsonPath("name", is("New Project")))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
         final var id = Long.parseLong(new JSONObject(contentAsString).get("id").toString());
 
-        final var loadedEntity = helloRepository.findById(id);
+        final var loadedEntity = projectRepository.findById(id);
 
         assertThat(loadedEntity).isPresent();
         assertThat(loadedEntity.get().getId()).isEqualTo(id);
-        assertThat(loadedEntity.get().getMessage()).isEqualTo("Foo");
+        assertThat(loadedEntity.get().getName()).isEqualTo("New Project");
     }
 }

@@ -10,6 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "project")
 @Data
+@EqualsAndHashCode(exclude = "employees")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,7 +24,7 @@ public class ProjectEntity {
     private Long projectManagerId;
 
     @Builder.Default
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "project_employee",
             joinColumns = @JoinColumn(name = "project_id"),

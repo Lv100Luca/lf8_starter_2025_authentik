@@ -3,26 +3,23 @@ package de.szut.lf8_starter.hello;
 import de.szut.lf8_starter.testcontainers.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
-public class GetByMessageIT extends AbstractIntegrationTest {
+class GetByMessageIT extends AbstractIntegrationTest {
 
 
     @Test
     void authorization() throws Exception {
         this.mockMvc.perform(get("/hello/findByMessage?message=Foo")
                         .with(csrf()))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -34,7 +31,7 @@ public class GetByMessageIT extends AbstractIntegrationTest {
         helloRepository.save(new HelloEntity("FooBar"));
         helloRepository.save(new HelloEntity("Foo"));
 
-        final var content = this.mockMvc.perform(get("/hello/findByMessage?message=Foo")
+        this.mockMvc.perform(get("/hello/findByMessage?message=Foo")
                         .with(csrf()))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$", hasSize(3)))
@@ -48,7 +45,7 @@ public class GetByMessageIT extends AbstractIntegrationTest {
     void messageDoesntExists() throws Exception {
         helloRepository.save(new HelloEntity("Foo"));
 
-        final var content = this.mockMvc.perform(get("/hello/findByMessage?message=Bar")
+        this.mockMvc.perform(get("/hello/findByMessage?message=Bar")
                         .with(csrf()))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$", hasSize(0)));

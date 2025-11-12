@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "employee")
 @Data
+@EqualsAndHashCode(exclude = "projects")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
