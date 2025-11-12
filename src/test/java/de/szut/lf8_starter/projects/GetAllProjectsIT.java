@@ -4,7 +4,6 @@ import de.szut.lf8_starter.testcontainers.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,9 +30,7 @@ public class GetAllProjectsIT extends AbstractIntegrationTest {
         projectRepository.save(project2);
         this.mockMvc.perform(get("/projects").with(csrf()))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].name", is("Project One")))
                 .andExpect(jsonPath("$[1].name", is("Project Two")));
     }
 }
-

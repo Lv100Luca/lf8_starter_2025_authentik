@@ -23,7 +23,7 @@ public class CreateProjectIT extends AbstractIntegrationTest {
         String name = "New Project";
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = startDate.plusMonths(6);
-        Long projectManagerId = null; // Assuming no project manager for this test
+        Long projectManagerId = 1L;
         final String newProjectJson = String.format("""
                 {
                     "name": "%s",
@@ -33,11 +33,11 @@ public class CreateProjectIT extends AbstractIntegrationTest {
                 }
                 """, name, startDate, endDate, projectManagerId);
 
-        final var contentAsString = this.mockMvc.perform(post("/hello").content(newProjectJson).contentType(MediaType.APPLICATION_JSON)
+        final var contentAsString = this.mockMvc.perform(post("/projects").content(newProjectJson).contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
-                .andExpect(jsonPath("message", is("Foo")))
+                .andExpect(jsonPath("name", is("New Project")))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
