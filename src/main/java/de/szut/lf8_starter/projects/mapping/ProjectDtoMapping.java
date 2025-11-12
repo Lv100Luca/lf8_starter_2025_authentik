@@ -4,7 +4,10 @@ import de.szut.lf8_starter.projects.ProjectEntity;
 import de.szut.lf8_starter.projects.dto.ProjectCreateDTO;
 import de.szut.lf8_starter.projects.dto.ProjectResponseDTO;
 import de.szut.lf8_starter.projects.dto.ProjectSimpleGetDTO;
+import jakarta.persistence.Column;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProjectDtoMapping {
     public static ProjectResponseDTO mapToResponseDto(final ProjectEntity project) {
         ProjectResponseDTO dto = new ProjectResponseDTO();
